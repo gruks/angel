@@ -198,9 +198,14 @@ async def send_to_dlq(
     )
     
     try:
+        # Include source in the dlq_event for tracking
+        dlq_event_with_source = dlq_record.to_dict()
+        dlq_event_with_source["source"] = source
+        
+        # publish_to_dlq takes event and error parameters
         success = await kafka_client.publish_to_dlq(
-            event=dlq_record.to_dict(),
-            key=source,
+            event=dlq_event_with_source,
+            error=error,
         )
         
         if success:
