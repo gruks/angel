@@ -38,6 +38,13 @@
 - DATA-08: Data pipeline normalizes all sources to common event schema
 - DATA-09: Kafka event bus handles real-time stream from all sources
 
+**Plans:** 3 plans
+
+**Plan list:**
+- [ ] 01-data-foundation-01-PLAN.md — Database schema, Pydantic event models, Kafka topics, config
+- [ ] 01-data-foundation-02-PLAN.md — 7 data source adapters with normalization
+- [ ] 01-data-foundation-03-PLAN.md — Ingestion orchestration, retry, health monitoring
+
 **Success Criteria (5 observable behaviors):**
 1. User can configure and activate each of the 7 data source connections
 2. Data from all sources appears in the normalized event schema within 15 minutes of availability
@@ -205,7 +212,7 @@
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | Data Foundation | Not Started |
+| 1 | Data Foundation | Planned |
 | 2 | ML Pipeline | Not Started |
 | 3 | Signal Fusion & Core Features | Not Started |
 | 4 | Delivery & Access | Not Started |
