@@ -150,6 +150,22 @@ Health endpoints accessible. /health/sources returns status for all 7 sources.
 </task>
 
 <task type="checkpoint:human-verify" gate="blocking">
+  <name>Task 5: Verify data foundation works end-to-end</name>
+  <files>N/A - verification task</files>
+  <action>
+This is a human verification task. Claude has implemented:
+- Database schema (plan 01)
+- All 7 data source adapters (plan 02)
+- Ingestion orchestrator, retry logic, health tracking (plan 03)
+
+You need to verify the complete data flow works: configure API keys, run ingestion, check health endpoints, confirm events flow to Kafka.
+  </action>
+  <verify>
+Start application, configure at least one API key, run ingestion, check /health/sources returns status, verify Kafka events published (if Kafka available)
+  </verify>
+  <done>
+Complete end-to-end data flow verified: sources can be configured, ingestion runs, health displays, events flow to Kafka
+  </done>
   <what-built>Complete data foundation: schema, adapters, orchestration, health monitoring</what-built>
   <how-to-verify>
 1. Start the application and verify database schema created
