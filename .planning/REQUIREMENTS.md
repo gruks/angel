@@ -148,11 +148,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SAT-01 to SAT-05 | Phase 2 | Pending |
 | GEOV-01 to GEOV-05 | Phase 3 | Pending |
 | SF-01 to SF-03 | Phase 3 | Pending |
-| AI-01 to AI-04 | Phase 4 | Pending |
+| AI-01 to AI-04 | Phase 5 | Pending |
 | API-01 to API-05 | Phase 3 | Pending |
-| ALERT-01 to ALERT-05 | Phase 3 | Pending |
-| RBAC-01 to RBAC-05 | Phase 3 | Pending |
-| EXPT-01 to EXPT-04 | Phase 3 | Pending |
+| ALERT-01 to ALERT-05 | Phase 4 | Pending |
+| RBAC-01 to RBAC-05 | Phase 4 | Pending |
+| EXPT-01 to EXPT-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 52 total
