@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// NOTE: Database URL should be set in prisma.config.ts or via environment variable at runtime
+
+// ConflictEvent model for storing conflict events from various sources (GDELT, ACLED, etc.)
+model ConflictEvent {
+  event_id       String   @id @default(uuid())
+  source         String   @map("source") // gdelt, acled, unhcr, etc.
+  event_date     DateTime @map("event_date") @db.Timestamptz
+  
+  // Location fields
+  latitude       Float?   @map("latitude")
+  longitude      Float?   @map("longitude")
+  country_iso    String?  @map("country_iso") @db.VarChar(3)
+  country_name   String?  @map("country_name")
+  admin_region   String?  @map("admin_region")
+  
+  // Classification
+  disorder_type  String?  @map("disorder_type") // political_violence, protest, strategic_developments
+  event_type     String?  @map("event_type")
+  sub_event_type String?  @map("sub_event_type")
+  
+  // Actors
+  actor1         String?  @map("actor1")
+  actor2         String?  @map("actor2")
+  
+  // Severity metrics
+  fatalities     Int      @default(0) @map("fatalities")
+  confidence     Float    @default(1.0) @map("confidence")
+  
+  // Computed fields
+  goldstein_scale Float?  @map("goldstein_scale") // -10 to +10 scale
+  tone            Float?  @map("tone") // -100 to +100 (negative = negative tone)
+  
+  // Raw source data preserved for audit
+  raw_data       Json?    @map("raw_data")
+  
+  // Timestamps
+  created_at     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updated_at     DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([source, event_date])
+  @@index([country_iso, event_date])
+  @@map("conflict_events")
+}
+
+// EconomicIndicator model for storing economic data from IMF, World Bank, etc.
+model EconomicIndicator {
+  indicator_id   String   @id @default(uuid())
+  source         String   @map("source") // imf, worldbank
+  country_iso    String   @map("country_iso") @db.VarChar(3)
+  country_name   String?  @map("country_name")
+  year           Int      @map("year")
+  value          Float    @map("value")
+  unit           String   @map("unit") // percent, usd, etc.
+  
+  // Additional metadata
+  indicator_type String?  @map("indicator_type") // gdp, inflation, unemployment, etc.
+  
+  // Raw source data
+  raw_data       Json?    @map("raw_data")
+  
+  // Timestamps
+  created_at     DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@unique([source, country_iso, year, indicator_type])
+  @@index([country_iso, year])
+  @@map("economic_indicators")
+}
+
+// SourceHealth model for monitoring external data source status
+model SourceHealth {
+  source                String   @id @map("source") // gdelt, acled, unhcr, etc.
+  status                String   @default("unknown") @map("status") // healthy, degraded, down
+  last_success          DateTime? @map("last_success") @db.Timestamptz
+  last_failure          DateTime? @map("last_failure") @db.Timestamptz
+  consecutive_failures  Int      @default(0) @map("consecutive_failures")
+  avg_latency_ms       Float    @default(0) @map("avg_latency_ms")
+  
+  // Timestamps
+  created_at     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updated_at     DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("source_health")
+}
